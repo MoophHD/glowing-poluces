@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour {
 	void Update () {
-        print(Input.GetMouseButtonDown(0));
 		if ( Input.touchCount > 0 || Input.GetMouseButtonDown(0) ) {
-            print('1');
+            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			// Vector3 clickPoint = ray.GetPoint(0f);
+
+            EventManager.dispatch("TAP");
         }
 	}
 }
