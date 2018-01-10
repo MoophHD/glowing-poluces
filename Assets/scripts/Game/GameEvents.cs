@@ -4,22 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-    TAP
-    SHOT_SUCCESS
-    SHOT_FAILURE
+    UNFREEZE
 */
 
-public class EventManager : MonoBehaviour {
+public class GameEvents : MonoBehaviour {
     private Dictionary <string, UnityEvent> eventDictionary;
-    private static EventManager eventManager;
+    private static GameEvents eventManager;
 
-    public static EventManager instance
+    public static GameEvents instance
     {
         get
         {
             if (!eventManager)
             {
-                eventManager = FindObjectOfType (typeof (EventManager)) as EventManager;
+                eventManager = FindObjectOfType (typeof (GameEvents)) as GameEvents;
 
                 if (!eventManager)
                 {

@@ -2,24 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMamager : MonoBehaviour {
+public class GameManager : MonoBehaviour {
     void OnEnable () {
-        EventManager.listen("SHOT_SUCCESS", setStuff);
-        EventManager.listen("SHOT_FAILURE", lose);
+        GameEvents.listen("UNFREEZE", enableGravity);
         
     }
 
     void OnDisable  () {
-        EventManager.stopListening("SHOT_SUCCESS", setStuff);
-        EventManager.stopListening("SHOT_FAILURE", lose);
+        GameEvents.stopListening("UNFREEZE", enableGravity);
     }
 
-    void setStuff() {
-        
+    void Start() {
+        Physics2D.gravity = Vector3.zero;
     }
 
-    void lose() {
-        
+    void enableGravity() {
+        Physics2D.gravity = GlobalVars.Instance.InitialGravityScale;
     }
-
 }

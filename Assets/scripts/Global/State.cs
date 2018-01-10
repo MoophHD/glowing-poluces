@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class State : MonoBehaviour {
 	private static State _instance;
-	public static State instance {
-		get {
-			return _instance;
+	public static State Instance {
+	get {
+		if (_instance == null) {
+			GameObject go = GameObject.Find("Global");
+			if (go == null)
+				go = new GameObject("Global");
+
+				go.AddComponent<State>();
+
 		}
+
+		return _instance;
+	}
 	}
 
 	public int score {get;set;}
