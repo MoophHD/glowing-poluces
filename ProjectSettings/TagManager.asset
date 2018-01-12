@@ -44,3 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Gamefront
+    uniqueID: 3231426927
+    locked: 0
