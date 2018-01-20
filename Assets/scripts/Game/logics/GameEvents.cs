@@ -5,6 +5,9 @@ using UnityEngine;
 
 /*
     UNFREEZE
+    POD_CONTACT
+    REPLAY
+    ONTO_NEXT_LEVEL
 */
 
 public class GameEvents : MonoBehaviour {

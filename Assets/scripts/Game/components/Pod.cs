@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pod : MonoBehaviour {
-    private Rigidbody2D rb;
+
+    private float initialRotation;
     private float force = 10f;
+
+    private Rigidbody2D rb;
+    private Transform tr;
     private LineRenderer lr;
 
+    public GameObject arrow;
+    public Transform arrowPivotTr;
 
     private bool swiping = false;
     private float radius = 1.5f;
@@ -14,6 +20,30 @@ public class Pod : MonoBehaviour {
     private Vector3 anchor;
     // private Vector3 swipeStart = Vector3.zero;
     // private Vector3 swipeFinish = Vector3.zero;
+
+    private Vector3 minVector;
+    private Vector3 maxVector;
+
+    void Start() {
+        minVector = Vector3.left;
+        maxVector = Vector3.right;
+
+        rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<Transform>();
+        initialRotation = tr.eulerAngles.z; //unity uses inversed degrees
+
+        // DrawLine(Vector3.zero, Vector3.zero, Color.red);
+        anchor = tr.position;
+        DrawLine(anchor, anchor, Color.red);
+    }
+
+
+    // HANDLE POD x POD COLLISION
+    void OnCollisionEnter2D(Collision2D coll) {
+        if (coll.gameObject.tag == "pod") {
+            GameEvents.dispatch("POD_CONTACT");
+        }
+    }
     
     void DrawLine(Vector3 start, Vector3 end, Color cl)
     {
@@ -32,17 +62,8 @@ public class Pod : MonoBehaviour {
         lr.SetPosition(1, end);
     }
 
-    void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        // DrawLine(Vector3.zero, Vector3.zero, Color.red);
-        anchor = GetComponent<Transform>().position;
-        DrawLine(anchor, anchor, Color.red);
-        
-    }
-
     void OnEnable () {
         GameEvents.listen("UNFREEZE", handleUnfreeze);
-        
     }
 
     void OnDisable  () {
@@ -50,11 +71,11 @@ public class Pod : MonoBehaviour {
     }
 
     void handleUnfreeze () {
-        jump();
+        release();
         hideLine();
     }
 
-    void jump() {
+    void release() {
         rb.AddForce(new Vector2(direction.x, direction.y) * force, ForceMode2D.Impulse);
     }
 
@@ -73,13 +94,14 @@ public class Pod : MonoBehaviour {
         if (swiping) {
             Vector3 finPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             finPoint.z = 0;
-            // print(absolutePoint);
-            // direction = absolutePoint.normalized;
-            // Vector3 clampedPoint = direction * radius;
 
             direction = (finPoint - anchor).normalized;
-      
-            // lr.SetPosition(1, (direction + anchor) * radius );
+            float deg = (float)((Mathf.Atan2(direction.x, direction.y) / Mathf.PI) * 180f);
+
+            if (deg > 0) deg = -180 - (180-deg); // @_@
+
+            arrowPivotTr.rotation = Quaternion.Euler(0, 0, -deg);
+
             lr.SetPosition(1, Vector3.ClampMagnitude(direction, radius)+ anchor );
         }
 
@@ -88,3 +110,4 @@ public class Pod : MonoBehaviour {
         }
     }
 }
+
