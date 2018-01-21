@@ -25,16 +25,12 @@ public class Pod : MonoBehaviour {
     private Vector3 maxVector;
 
     void Start() {
-        minVector = Vector3.left;
-        maxVector = Vector3.right;
-
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<Transform>();
         initialRotation = tr.eulerAngles.z; //unity uses inversed degrees
 
         // DrawLine(Vector3.zero, Vector3.zero, Color.red);
         anchor = tr.position;
-        DrawLine(anchor, anchor, Color.red);
     }
 
 
@@ -45,23 +41,6 @@ public class Pod : MonoBehaviour {
         }
     }
     
-    void DrawLine(Vector3 start, Vector3 end, Color cl)
-    {
-        GameObject myLine = new GameObject();
-        myLine.transform.SetParent(GetComponent<Transform>());
-        myLine.transform.position = start;
-        myLine.AddComponent<LineRenderer>();
-        lr = myLine.GetComponent<LineRenderer>();
-        lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-        lr.sortingOrder = 1;
-		lr.startColor = cl;
-		lr.endColor = cl;
-		lr.startWidth = 0.1f;
-		lr.endWidth = 0.1f;
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
-    }
-
     void OnEnable () {
         GameEvents.listen("UNFREEZE", handleUnfreeze);
     }
@@ -101,8 +80,6 @@ public class Pod : MonoBehaviour {
             if (deg > 0) deg = -180 - (180-deg); // @_@
 
             arrowPivotTr.rotation = Quaternion.Euler(0, 0, -deg);
-
-            lr.SetPosition(1, Vector3.ClampMagnitude(direction, radius)+ anchor );
         }
 
         if (Input.GetMouseButtonUp(0)) {
