@@ -8,6 +8,7 @@ using UnityEngine;
     POD_CONTACT
     REPLAY
     ONTO_NEXT_LEVEL
+    LOAD_BOARD
 */
 
 public class GameEvents : MonoBehaviour {

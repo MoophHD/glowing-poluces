@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class State : MonoBehaviour {
@@ -19,10 +20,36 @@ public class State : MonoBehaviour {
 	}
 	}
 
-	public int score {get;set;}
+	private int _lvl;
+	public int lvl {
+		get {
+			return _lvl;
+		}
+		set {
+			if (_lvl != value) {
+				loadLvlInfo();
+			}
+			_lvl = value;
+		}
+	}
+
+
+	public class LvlInfo {
+		public Tile[] tiles;
+	}
+
+	void loadLvlInfo() {
+		string path = Application.streamingAssetsPath + "/lvlinfo.json";
+		string jsonString = File.ReadAllText(path);
+
+		lvlInfo = JsonUtility.FromJson<LvlInfo>(jsonString);
+	}
+
+	public static LvlInfo lvlInfo {get; set;}
 
 	void Awake() {
-		score = 0;
+		//temp 
+		loadLvlInfo();
 
 		if (_instance == null)
 			_instance = this;
