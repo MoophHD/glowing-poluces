@@ -6,6 +6,8 @@ TagManager:
   tags:
   - pod
   - block
+  - pod_active_rad
+  - pod_trigger_rad
   layers:
   - Default
   - TransparentFX
