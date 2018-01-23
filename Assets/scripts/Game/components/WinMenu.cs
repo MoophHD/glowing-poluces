@@ -17,7 +17,6 @@ public class WinMenu : MonoBehaviour {
     }
 
     void displatchReplay() {
-        print('1');
         GameEvents.dispatch("REPLAY");
     }
 

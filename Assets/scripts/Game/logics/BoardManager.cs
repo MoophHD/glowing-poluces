@@ -5,14 +5,20 @@ using System;
 using System.IO;
 
 public class BoardManager : MonoBehaviour {
+    public Transform tileContainer;
+    public GameObject[] tilePrefabs;
 
-    private enum TileType { block };
+    Dictionary<String, int> tileType = new Dictionary<String, int>
+    {
+        { "pod", 0 },
+        { "block", 1}
+    };
 
     void OnEnable () {
         GameEvents.listen("LOAD_BOARD", load);
         
     }
-    void OnDisable  () {
+    void OnDisable() {
         GameEvents.stopListening("LOAD_BOARD", load);
     }
 
@@ -22,18 +28,19 @@ public class BoardManager : MonoBehaviour {
         for (int i = 0; i < tiles.Length; i++)
         {
             tile = tiles[i];
-            print(tile.x);
+            GameObject instance = Instantiate(
+                tilePrefabs[tileType[tile.type]],
+                new Vector3( tile.x, tile.y, 0f),
+                Quaternion.identity
+                );
+
+            instance.transform.SetParent(tileContainer);
         }
     }
 
-    void genBoard() {
-
-    }
-
-
     //temp
     void Start() {
-        load();
+        // load();
         
     }
 }

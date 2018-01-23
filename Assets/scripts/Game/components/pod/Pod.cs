@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Pod : MonoBehaviour {
 
+    private bool activeControl = false;
     private float initialRotation;
     private float force = 10f;
 
@@ -33,6 +34,13 @@ public class Pod : MonoBehaviour {
         anchor = tr.position;
     }
 
+    public void activateControl() {
+        activeControl = true;
+    }
+
+    public void deactivateControl() {
+        activeControl = false;
+    }
 
     // HANDLE POD x POD COLLISION
     void OnCollisionEnter2D(Collision2D coll) {
@@ -63,28 +71,30 @@ public class Pod : MonoBehaviour {
     }
 
     void Update() {
-        // PRESS
-        if (Input.GetMouseButtonDown(0)) {
+        if (activeControl) {
+            // PRESS
             if (!swiping) {
                 swiping = true;
             }
+            //HOLD
+            if (swiping) {
+                Vector3 finPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                finPoint.z = 0;
+
+                direction = (finPoint - anchor).normalized;
+                float deg = (float)((Mathf.Atan2(direction.x, direction.y) / Mathf.PI) * 180f);
+
+                if (deg > 0) deg = -180 - (180-deg); // @_@
+
+                arrowPivotTr.rotation = Quaternion.Euler(0, 0, -deg);
+            }
+
+            if (Input.GetMouseButtonUp(0)) {
+                swiping = false;
+            }
+            
         }
-        //HOLD
-        if (swiping) {
-            Vector3 finPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            finPoint.z = 0;
 
-            direction = (finPoint - anchor).normalized;
-            float deg = (float)((Mathf.Atan2(direction.x, direction.y) / Mathf.PI) * 180f);
-
-            if (deg > 0) deg = -180 - (180-deg); // @_@
-
-            arrowPivotTr.rotation = Quaternion.Euler(0, 0, -deg);
-        }
-
-        if (Input.GetMouseButtonUp(0)) {
-            swiping = false;
-        }
     }
 }
 
