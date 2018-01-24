@@ -26,6 +26,9 @@ public class PodControl : MonoBehaviour {
             transform.gameObject.GetComponent<Pod>().deactivateControl();
             
         } else {
+            
+            if (State.Instance.isPodActive) return;
+
             for (int i = 0; i < hits.Length; i++) {
                 hit = hits[i];
 

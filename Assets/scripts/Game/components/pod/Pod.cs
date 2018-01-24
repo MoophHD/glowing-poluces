@@ -36,19 +36,20 @@ public class Pod : MonoBehaviour {
 
     public void activateControl() {
         activeControl = true;
+        State.Instance.isPodActive = true;
     }
 
     public void deactivateControl() {
         activeControl = false;
+        State.Instance.isPodActive = false;
     }
 
-    // HANDLE POD x POD COLLISION
-    void OnCollisionEnter2D(Collision2D coll) {
-        if (coll.gameObject.tag == "pod") {
+    void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.tag == "pod") {
             GameEvents.dispatch("POD_CONTACT");
         }
     }
-    
+
     void OnEnable () {
         GameEvents.listen("UNFREEZE", handleUnfreeze);
     }

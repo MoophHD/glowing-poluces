@@ -1,7 +1,14 @@
 {
     "tiles":[
         {"x":0,"y":0,"type":"block"},
-        {"x":0.5,"y":0,"type":"block"},
-        {"x":0,"y":0.5,"type":"pod"}
+        {"x":0.5,"y":1.5,"type":"block"},
+        {"x":1,"y":1.5,"type":"block"},
+        {"x":1.5,"y":0,"type":"block"},
+        {"x":2,"y":0,"type":"block"},
+        {"x":2.5,"y":1.5,"type":"block"},
+        {"x":3,"y":1.5,"type":"block"},
+        {"x":0,"y":0.5,"type":"pod"},
+        {"x":3,"y":0.5,"type":"pod"},
+        {"x":3,"y":0,"type":"block"}
     ]
 }

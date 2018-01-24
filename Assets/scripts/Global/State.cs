@@ -47,9 +47,12 @@ public class State : MonoBehaviour {
 
 	public static LvlInfo lvlInfo {get; set;}
 
+	public bool isPodActive {get;set;}
+
 	void Awake() {
 		//temp 
 		loadLvlInfo();
+		isPodActive = false;
 
 		if (_instance == null)
 			_instance = this;
