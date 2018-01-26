@@ -5,6 +5,7 @@ using System;
 using System.IO;
 
 public class BoardManager : MonoBehaviour {
+    private Vector3 alignVector = new Vector3(-100f, -100f, -100f);
     public Transform tileContainer;
     public GameObject[] tilePrefabs;
 
@@ -26,6 +27,7 @@ public class BoardManager : MonoBehaviour {
     }
 
     void load() {
+        tileContainer.position = Vector3.zero;
         if (tileContainer.childCount > 0) {
             for(int i = 0; i < tileContainer.childCount; i++)
             {
@@ -47,11 +49,16 @@ public class BoardManager : MonoBehaviour {
 
             instance.transform.SetParent(tileContainer);
         }
+
         alignBoard();
     }
 
     void alignBoard() {
-        Vector3 pos = tileContainer.position;
+        if (alignVector != new Vector3(-100f, -100f, -100f)) {
+            tileContainer.position = alignVector;
+            return;
+        }
+
         float maxX = 0f;
         float maxY = 0f;
         float minX = 0f;
@@ -61,18 +68,18 @@ public class BoardManager : MonoBehaviour {
         {
             Transform elem = tileContainer.GetChild(i);
             Vector3 elemMax = getMaxBounds(elem.gameObject);
-            Vector3 elemMin = getMaxBounds(elem.gameObject);
+            Vector3 elemMin = getMinBounds(elem.gameObject);
             maxX = Mathf.Max(elemMax.x, maxX);
             maxY = Mathf.Max(elemMax.y, maxY);
             minX = Mathf.Min(elemMin.x, minX);
             minY = Mathf.Min(elemMin.y, minY);
         }
- 
-
-        float xOffset = (GlobalVars.Instance.MaxCameraBounds.x - (maxX - minX))/2;
-        float yOffset = (GlobalVars.Instance.MaxCameraBounds.y - (maxY - minY))/2;
-
-        tileContainer.position = new Vector3(pos.x-xOffset, pos.y-yOffset, pos.z);
+        
+        float xOffset = (-(maxX - minX))/2;
+        float yOffset = (-(maxY - minY))/2;
+    
+        alignVector = new Vector3(xOffset, yOffset, 0f);
+        tileContainer.position = alignVector;
     }
 
     Vector3 getMaxBounds(GameObject target) {
