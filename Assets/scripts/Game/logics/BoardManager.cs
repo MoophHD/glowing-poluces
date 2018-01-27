@@ -27,6 +27,9 @@ public class BoardManager : MonoBehaviour {
     }
 
     void load() {
+        const float SIZE_X = 5;
+        const float SIZE_Y = 5;
+
         tileContainer.position = Vector3.zero;
         if (tileContainer.childCount > 0) {
             for(int i = 0; i < tileContainer.childCount; i++)
@@ -50,7 +53,7 @@ public class BoardManager : MonoBehaviour {
             instance.transform.SetParent(tileContainer);
         }
 
-        alignBoard();
+        tileContainer.position = new Vector3(-SIZE_X/2, SIZE_Y/2, 0f);
     }
 
     void alignBoard() {
